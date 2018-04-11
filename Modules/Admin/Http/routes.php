@@ -1,6 +1,9 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Modules\Admin\Http\Controllers'], function()
+/*Route::group(['middleware' => 'web', 'namespace' => 'Modules\Admin\Http\Controllers'], function()
 {
-    Route::get('/', 'AdminController@index');
-});
+    Route::get('/', [
+        'uses'=>'AdminController@index',
+        'as'=>'admin'
+    ]);
+});*/

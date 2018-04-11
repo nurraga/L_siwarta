@@ -11,12 +11,25 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('welcome');
+Route::get('/',function (){
+    if(Auth::check()){
+        return redirect()->route('admin');
+    }else{
+        return view('auth/login');
+    }
+});
+Route::post('/login','App\Http\Controllers\Auth\LoginController@login')->name('login');
+Route::match(['get','head'],'password/reset','App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::match(['get','head'],'register','App\Http\Controllers\Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('/register','App\Http\Controllers\Auth\RegisterController@register')->name('register.user');
+Route::post('/logout','App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Auth::routes();
 
-Auth::routes();
+//Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'web', 'namespace' => 'Modules\Admin\Http\Controllers'], function()
+{
+    Route::get('/', 'AdminController@index')->name('admin');
+});
